@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
     exit(1);
   }
   bzero(&servaddr, sizeof(servaddr));
+  servaddr.sin_len = sizeof(servaddr);
   servaddr.sin_family = AF_INET;
   servaddr.sin_port = htons(SERV_PORT);
   inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
@@ -40,7 +41,10 @@ int main(int argc, char *argv[])
 int dg_cli(int sockfd, const struct sockaddr *pservaddr, socklen_t servlen)
 {
   int n;
+  char reply_ip[MAX_IP_LEN];
   char sendline[MAXLINE], recvline[MAXLINE];
+  socklen_t len;
+  struct sockaddr_in reply_addr, *t_addr;
 
   while(fgets(sendline, MAXLINE, stdin) != NULL)
   {
@@ -51,12 +55,24 @@ int dg_cli(int sockfd, const struct sockaddr *pservaddr, socklen_t servlen)
       exit(1);
     }
 
-    n = recvfrom(sockfd, recvline, MAXLINE, 0, NULL, NULL);
+    len = sizeof(struct sockaddr_in);
+    n = recvfrom(sockfd, recvline, MAXLINE, 0,
+      (struct sockaddr *)&reply_addr, &len);
     if(n == -1)
     {
       perror("recvfrom failed!");
       exit(1);
     }
+    if(len != servlen ||
+      memcmp(pservaddr, &reply_addr, len) != 0)
+    {
+      t_addr = (struct sockaddr_in *)pservaddr;
+      printf("ignored:send from %s, reply from %s\n",
+        inet_ntop(AF_INET, &t_addr->sin_addr, reply_ip, MAX_IP_LEN),
+        inet_ntop(AF_INET, &reply_addr.sin_addr, reply_ip, MAX_IP_LEN));
+      continue;
+    }
+
     recvline[n] = '\0';
     fputs(recvline, stdout);
   }
