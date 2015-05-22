@@ -12,7 +12,7 @@
 
 #include "echoc.h"
 
-int main()
+int main(int argc, char *argv[])
 {
   int fd;
   struct sockaddr_in srvaddr;
@@ -24,8 +24,8 @@ int main()
 
   memset(&srvaddr, 0, sizeof(SAIN));
   srvaddr.sin_family = AF_INET;
-  srvaddr.sin_port = htons(5555);
-  inet_pton(AF_INET, "127.0.0.1", &srvaddr.sin_addr);
+  srvaddr.sin_port = htons(PORT_DFT);
+  inet_pton(AF_INET, IP_DFT, &srvaddr.sin_addr);
 
   if(connect(fd, (SA *)&srvaddr, sizeof(SAIN)) < 0) {
     perror("connect fail");
@@ -39,11 +39,11 @@ int main()
 
 int tcp_cli(int fd)
 {
-  char buf[1024] = {0};
+  char buf[MAXLINE] = {0};
 
-  while(fgets(buf, 1024, stdin) != NULL) {
+  while(fgets(buf, MAXLINE, stdin) != NULL) {
     write(fd, buf, strlen(buf));
-    read(fd, buf, 1024);
+    read(fd, buf, MAXLINE);
     fputs(buf, stdout);
   }
 

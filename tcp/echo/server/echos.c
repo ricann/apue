@@ -24,7 +24,7 @@ int main()
   }
 
   srvaddr.sin_family = AF_INET;
-  srvaddr.sin_port = htons(5555);
+  srvaddr.sin_port = htons(PORT_DFT);
   srvaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
   if(bind(listenfd, (SA *)&srvaddr, sizeof(SAIN)) < 0) {
@@ -32,7 +32,7 @@ int main()
     return -1;
   }
 
-  if(listen(listenfd, 10) < 0) {
+  if(listen(listenfd, LISTEN_LIST_LEN) < 0) {
     perror("listen fail");
     return -1;
   }
@@ -64,7 +64,7 @@ int main()
 int tcp_echo(int connfd)
 {
   int n;
-  char buf[1024] = {0};
+  char buf[MAXLINE] = {0};
 
 again:
   while( (n = read(connfd, buf, sizeof(buf))) > 0)
