@@ -4,9 +4,9 @@
 include make.h
 
 all:
-	$(MAKE) -w -C $(ECHO_BASE)/server
-	$(MAKE) -w -C $(ECHO_BASE)/client
+	$(MAKE) -w -C $(UDP_ECHO_BASE)/server
+	$(MAKE) -w -C $(UDP_ECHO_BASE)/client
 
 clean:
-	$(MAKE) -w -C $(ECHO_BASE)/server clean
-	$(MAKE) -w -C $(ECHO_BASE)/client clean
+	$(MAKE) -w -C $(UDP_ECHO_BASE)/server clean
+	$(MAKE) -w -C $(UDP_ECHO_BASE)/client clean

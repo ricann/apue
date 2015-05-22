@@ -1,1 +1,1 @@
-export ECHO_BASE=`pwd`
+export UDP_ECHO_BASE=`pwd`
