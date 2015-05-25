@@ -1,12 +1,16 @@
+.PHONY: all clean
+.SILENT:
+
+
 include make.h
 
 all: libunp.a libunp.so
 
 libunp.a: libunp.o
-	$(CC) $(lIB_A_FLAGS) -o $@ $<
+	$(AR) $(LIB_A_FLAGS) $@ $<
 
 libunp.so: libunp.o
-	$(CC) $(lIB_SO_FLAGS) -o $@ $<
+	$(LD) $(LIB_SO_FLAGS) -o $@ $<
 
 libunp.o: libunp.c
 	$(CC) $(CC_FLAGS) -o $@ $<
