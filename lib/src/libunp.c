@@ -12,6 +12,14 @@
 
 #include "libunp.h"
 
+/*********************************************************************************
+*Function: readn
+*Description： read n bytes from specified file descriptor
+*Input: fd(file descriptor) / n(number)
+*Output: ptr(output buffer)
+*Return: read bytes
+*Date: 2015/5/28
+**********************************************************************************/
 ssize_t readn(int fd, void *ptr, size_t n)
 {
   size_t nleft;
@@ -38,6 +46,14 @@ ssize_t readn(int fd, void *ptr, size_t n)
   return (n - nleft); //return >= 0
 }
 
+/*********************************************************************************
+*Function: writen
+*Description： write n bytes to specified file descriptor
+*Input: fd(file descriptor) / ptr(input buffer) / n(number)
+*Output: none
+*Return: written bytes
+*Date: 2015/5/28
+**********************************************************************************/
 ssize_t writen(int fd, const void *ptr, size_t n)
 {
   size_t nleft;
