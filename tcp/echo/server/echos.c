@@ -68,7 +68,7 @@ int tcp_echo(int connfd)
 
 again:
   while( (n = read(connfd, buf, sizeof(buf))) > 0)
-    write(connfd, buf, n);
+    writen(connfd, buf, n);
 
   if(n<0 && errno==EINTR)
     goto again;

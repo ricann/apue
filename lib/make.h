@@ -14,8 +14,9 @@ LD_FLAGS =
 RM_FLAGS = -f
 MKDIR_FLAGS =
 
-LIB_INC_DIR = ${LIB_BASE}/inc
-LIB_SRC_DIR = ${LIB_BASE}/src
-LIB_OBJ_DIR = ${LIB_BASE}/obj
+LIB_BASE = ${UNP_BASE}/lib
+LIB_INC_DIR = ${UNP_BASE}/lib/inc
+LIB_SRC_DIR = ${UNP_BASE}/lib/src
+LIB_OBJ_DIR = ${UNP_BASE}/lib/obj
 
 LIB_INC = -I${LIB_INC_DIR}

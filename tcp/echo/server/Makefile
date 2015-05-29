@@ -3,10 +3,10 @@ include ../make.h
 all: echos
 
 echos: echos.o
-	$(CC) -o $@ echos.o
+	$(CC) -o $@ echos.o -L${LIB_INC_BASE} -lunp
 
 echos.o: echos.c
-	$(CC) $(INC) $(CC_FLAGS) -o $@ $<
+	$(CC) $(CC_FLAGS) -o $@ $<
 
 clean:
 	$(RM) echos.o echos
