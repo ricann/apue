@@ -13,3 +13,9 @@ LIB_SO_FLAGS = -shared -fPic
 LD_FLAGS =
 RM_FLAGS = -f
 MKDIR_FLAGS =
+
+LIB_INC_DIR = ${LIB_BASE}/inc
+LIB_SRC_DIR = ${LIB_BASE}/src
+LIB_OBJ_DIR = ${LIB_BASE}/obj
+
+LIB_INC = -I${LIB_INC_DIR}
