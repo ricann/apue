@@ -1,14 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-
-#include <unistd.h>
 #include "libunp.h"
 #include "echoc.h"
 
@@ -42,7 +31,7 @@ int tcp_cli(int fd)
   char buf[MAXLINE] = {0};
 
   while(fgets(buf, MAXLINE, stdin) != NULL) {
-    writen(fd, buf, strlen(buf));
+    Writen(fd, buf, strlen(buf));
     read(fd, buf, MAXLINE);
     fputs(buf, stdout);
   }

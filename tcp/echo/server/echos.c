@@ -1,13 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-
-#include <unistd.h>
 #include "libunp.h"
 #include "echos.h"
 
@@ -68,7 +58,7 @@ int tcp_echo(int connfd)
 
 again:
   while( (n = read(connfd, buf, sizeof(buf))) > 0)
-    writen(connfd, buf, n);
+    Writen(connfd, buf, n);
 
   if(n<0 && errno==EINTR)
     goto again;
