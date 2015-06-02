@@ -9,7 +9,7 @@
 #include <netinet/in.h>
 
 #include <unistd.h>
-
+#include "libunp.h"
 #include "echoc.h"
 
 int main(int argc, char *argv[])
@@ -42,7 +42,7 @@ int tcp_cli(int fd)
   char buf[MAXLINE] = {0};
 
   while(fgets(buf, MAXLINE, stdin) != NULL) {
-    write(fd, buf, strlen(buf));
+    writen(fd, buf, strlen(buf));
     read(fd, buf, MAXLINE);
     fputs(buf, stdout);
   }
