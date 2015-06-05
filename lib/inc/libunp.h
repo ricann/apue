@@ -24,6 +24,8 @@
 //read and write related
 ssize_t Readn(int fd, void *ptr, size_t nbytes);
 ssize_t Writen(int fd, const void *ptr, size_t nbytes);
+ssize_t Readline(int fd, void *vptr, size_t maxlen);
+ssize_t Readline_buf(void **vptrptr);
 
 //for error information
 void err_ret(const char *fmt, ...);

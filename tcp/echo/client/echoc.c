@@ -28,12 +28,14 @@ int main(int argc, char *argv[])
 
 int tcp_cli(int fd)
 {
-  char buf[MAXLINE] = {0};
+  char sendline[MAXLINE];
+  char recvline[MAXLINE];
 
-  while(fgets(buf, MAXLINE, stdin) != NULL) {
-    Writen(fd, buf, strlen(buf));
-    read(fd, buf, MAXLINE);
-    fputs(buf, stdout);
+  while(fgets(sendline, MAXLINE, stdin) != NULL) {
+    Writen(fd, sendline, strlen(sendline));
+    if(Readline(fd, recvline, MAXLINE) == 0)
+      err_quit("tcp_cli: server terminated prematurely");
+    fputs(recvline, stdout);
   }
 
   return 0;
