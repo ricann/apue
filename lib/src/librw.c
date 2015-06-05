@@ -1,5 +1,9 @@
 #include "libunp.h"
 
+static int read_cnt;
+static char *read_ptr;
+static char read_buf[MAXLINE];
+
 /******************************************************************************
 *Function: readn
 *Description： read n bytes from specified file descriptor
@@ -109,6 +113,35 @@ Writen(int fd, const void *ptr, size_t nbytes)
 }
 
 /******************************************************************************
+*Function: read_1byte
+*Description： read a byte from a buffer
+*Input: fd(file descriptor)
+*Output: ptr(output buffer)
+*Return: read bytes
+*Date: 2015/6/5
+******************************************************************************/
+static ssize_t
+read_1byte(int fd, char *ptr)
+{
+  if(read_cnt <= 0) {
+  again:
+    if( (read_cnt = read(fd, read_buf, MAXLINE)) < 0) {
+      if(errno == EINTR)
+        goto again;
+      return -1;
+    } else if(read_cnt == 0) {
+      return 0;
+    } else {
+      read_ptr = read_buf;
+    }
+  }
+
+  read_cnt--;
+  *ptr = *read_ptr++;
+  return 1;
+}
+
+/******************************************************************************
 *Function: readline
 *Description： read a line from a file descriptor
 *Input: fd(file descriptor) / n(number)
@@ -124,8 +157,7 @@ readline(int fd, void *vptr, size_t maxlen)
 
   ptr = vptr;
   for(n=1; n<maxlen; n++) {
-  again:
-    if( (rc = read(fd, &c, 1)) == 1) {
+    if( (rc = read_1byte(fd, &c)) == 1) {
       *ptr++ = c;
       if(c == '\n')
         break;          //new line is stored, like fgets()
@@ -133,8 +165,6 @@ readline(int fd, void *vptr, size_t maxlen)
       *ptr = '\0';
       return (n - 1);   //EOF, n-1 bytes were read
     } else {
-      if(errno == EINTR)
-        goto again;
       return -1;        //error, errno set by read()
     }
   }
@@ -145,7 +175,7 @@ readline(int fd, void *vptr, size_t maxlen)
 
 /******************************************************************************
 *Function: Readline
-*Description： read a line from a file descriptor
+*Description：read a line from a file descriptor
 *Input: fd(file descriptor) / n(number)
 *Output: vptr(output buffer)
 *Return: read bytes
@@ -160,4 +190,21 @@ Readline(int fd, void *vptr, size_t maxlen)
     err_sys("readline error");
 
   return n;
+}
+
+/******************************************************************************
+*Function: Readline_buf
+*Description：return readline buffer and read bytes
+*Input: none
+*Output: vptrptr(output buffer pointer)
+*Return: read bytes which hasn't used
+*Date: 2015/6/5
+******************************************************************************/
+ssize_t
+Readline_buf(void **vptrptr)
+{
+  if(read_cnt)
+    *vptrptr = read_ptr;
+
+  return read_cnt;
 }
