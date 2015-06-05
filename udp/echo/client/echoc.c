@@ -15,14 +15,12 @@ int main(int argc, char *argv[])
   int sockfd;
   struct sockaddr_in servaddr;
 
-  if(argc != 2)
-  {
+  if(argc != 2) {
     printf("please input ip address!\n");
     exit(1);
   }
 
-  sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-  if(sockfd == -1)
+  if( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
   {
     perror("socket failed");
     exit(1);
@@ -48,9 +46,8 @@ int dg_cli(int sockfd, const struct sockaddr *pservaddr, socklen_t servlen)
 
   while(fgets(sendline, MAXLINE, stdin) != NULL)
   {
-    n = sendto(sockfd, sendline, strlen(sendline), 0, pservaddr, servlen);
-    if(n == -1)
-    {
+    if( (n = sendto(sockfd, sendline, strlen(sendline),
+      0, pservaddr, servlen)) == -1) {
       perror("sendto failed!");
       exit(1);
     }
@@ -58,14 +55,12 @@ int dg_cli(int sockfd, const struct sockaddr *pservaddr, socklen_t servlen)
     len = sizeof(struct sockaddr_in);
     n = recvfrom(sockfd, recvline, MAXLINE, 0,
       (struct sockaddr *)&reply_addr, &len);
-    if(n == -1)
-    {
+    if(n == -1) {
       perror("recvfrom failed!");
       exit(1);
     }
-    if(len != servlen ||
-      memcmp(pservaddr, &reply_addr, len) != 0)
-    {
+    
+    if(len != servlen || memcmp(pservaddr, &reply_addr, len) != 0) {
       t_addr = (struct sockaddr_in *)pservaddr;
       printf("ignored:send from %s, reply from %s\n",
         inet_ntop(AF_INET, &t_addr->sin_addr, reply_ip, MAX_IP_LEN),
