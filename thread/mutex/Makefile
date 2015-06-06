@@ -4,7 +4,7 @@ include make.h
 all: mutex
 
 mutex: mutex_test.o
-	$(CC) -o $@ $<
+	$(CC) -o $@ $< -lpthread
 
 mutex_test.o: mutex_test.c
 	$(CC) $(CC_FLAGS) -I${LIB_INC_BASE} -o $@ $<
