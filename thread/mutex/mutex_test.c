@@ -1,5 +1,4 @@
 
-#include <pthread.h>
 #include "libunp.h"
 #include "mutex_test.h"
 
