@@ -1,6 +1,7 @@
 .PHONY: all clean
 .SILENT:
 
+include ${UNP_BASE}/make.h
 include make.h
 
 all: libunp.a libunp.so
