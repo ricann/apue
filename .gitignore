@@ -3,3 +3,4 @@
 *.so
 echoc
 echos
+mutex_test
