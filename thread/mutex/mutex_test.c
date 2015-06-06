@@ -9,8 +9,11 @@ int main()
 {
   pthread_t tida, tidb;
 
-  pthread_create(&tida, NULL, &doit, NULL);
-  pthread_create(&tidb, NULL, &doit, NULL);
+  if(pthread_create(&tida, NULL, &doit, NULL) != 0)
+    err_quit("pthread_create tida fail");
+
+  if(pthread_create(&tidb, NULL, &doit, NULL) != 0)
+    err_quit("pthread_create tidb fail");
 
   pthread_join(tida, NULL);
   pthread_join(tidb, NULL);
