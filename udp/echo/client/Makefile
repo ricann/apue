@@ -1,3 +1,4 @@
+include ${UNP_BASE}/make.h
 include ../make.h
 
 all: echoc
