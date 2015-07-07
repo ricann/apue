@@ -24,9 +24,12 @@
 
 //wrapunix.c
 //unix functions wrappers
+int Open(const char *pathname, int oflag, mode_t mode);
+void Close(int filedes);
 ssize_t Read(int filedes, void *ptr, size_t nbytes);
 void Write(int filedes, const void *ptr, size_t nbytes);
 pid_t Fork(void);
+pid_t Waitpid(pid_t pid, int *statloc, int options);
 void Pipe(int filedes[2]);
 
 //librw.c
