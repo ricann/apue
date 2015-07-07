@@ -7,14 +7,14 @@ client(int rfd, int wfd)
   ssize_t n;
   char buf[MAXLINE];
 
-  fgets(buf, MAXLINE, stdin);
+  Fgets(buf, MAXLINE, stdin);
   len = strlen(buf);
 
   if(buf[len-1] == '\n')
     len--;
 
-  write(wfd, buf, len);
+  Write(wfd, buf, len);
 
-  while( (n = read(rfd, buf, MAXLINE)) > 0)
-    write(STDOUT_FILENO, buf, n);
+  while( (n = Read(rfd, buf, MAXLINE)) > 0)
+    Write(STDOUT_FILENO, buf, n);
 }

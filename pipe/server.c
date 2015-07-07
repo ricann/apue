@@ -7,7 +7,7 @@ server(int rfd, int wfd)
   ssize_t n;
   char buf[MAXLINE];
 
-  if( (n = read(rfd, buf, MAXLINE)) == 0)
+  if( (n = Read(rfd, buf, MAXLINE)) == 0)
     err_quit("end-of-file while reading pathname");
 
   buf[n] = '\0';
@@ -17,11 +17,11 @@ server(int rfd, int wfd)
     snprintf(buf+n, sizeof(buf)-n, "can't open, %s\n",
       strerror(errno));
     n = strlen(buf);
-    write(wfd, buf, n);
+    Write(wfd, buf, n);
   } else {
-    while ( (n = read(fd, buf, MAXLINE)) > 0)
-      write(wfd, buf, n);
+    while ( (n = Read(fd, buf, MAXLINE)) > 0)
+      Write(wfd, buf, n);
 
-    close(fd);
+    Close(fd);
   }
 }
