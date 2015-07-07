@@ -22,13 +22,21 @@
 #define MAXLINE   4096  //max text line length
 #define BUFFSIZE  8192  //buffer size for reads and writes
 
+//wrapunix.c
+//unix functions wrappers
+ssize_t Read(int filedes, void *ptr, size_t nbytes);
+void Write(int filedes, const void *ptr, size_t nbytes);
+pid_t Fork(void);
+void Pipe(int filedes[2]);
 
-//read and write related
+//librw.c
+//read and write related,
 ssize_t Readn(int fd, void *ptr, size_t nbytes);
 ssize_t Writen(int fd, const void *ptr, size_t nbytes);
 ssize_t Readline(int fd, void *vptr, size_t maxlen);
 ssize_t Readline_buf(void **vptrptr);
 
+//liberr.c
 //for error information
 void err_ret(const char *fmt, ...);
 void err_sys(const char *fmt, ...);

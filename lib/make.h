@@ -8,4 +8,5 @@ LIB_OBJ_DIR = ${UNP_BASE}/lib/obj
 #---------------variables--------------
 LIB_INCS = -I${LIB_INC_DIR}
 LIB_OBJS = ${LIB_OBJ_DIR}/librw.o \
-          ${LIB_OBJ_DIR}/liberr.o
+          ${LIB_OBJ_DIR}/liberr.o \
+          ${LIB_OBJ_DIR}/wrapunix.o
