@@ -21,6 +21,9 @@ ${LIB_OBJ_DIR}/liberr.o: ${LIB_SRC_DIR}/liberr.c
 ${LIB_OBJ_DIR}/wrapunix.o: ${LIB_SRC_DIR}/wrapunix.c
 	$(CC) $(CC_FLAGS) ${LIB_INCS} -o $@ $<
 
+${LIB_OBJ_DIR}/wrapstdio.o: ${LIB_SRC_DIR}/wrapstdio.c
+	$(CC) $(CC_FLAGS) ${LIB_INCS} -o $@ $<
+
 clean:
 	$(RM) ${LIB_OBJ_DIR}/*.o
 	$(RM) libunp.a

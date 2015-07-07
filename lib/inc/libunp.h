@@ -32,6 +32,10 @@ pid_t Fork(void);
 pid_t Waitpid(pid_t pid, int *statloc, int options);
 void Pipe(int filedes[2]);
 
+//wrapstdio.c
+//stdio functions wrappers
+char *Fgets(char *buf, int n, FILE *fp);
+
 //librw.c
 //read and write related,
 ssize_t Readn(int fd, void *ptr, size_t nbytes);
