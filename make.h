@@ -1,5 +1,6 @@
 #---------------compile related--------
-CC = echo $(notdir $<);gcc
+CC = @echo $(notdir $<);gcc
+CC_NO_ECHO = gcc
 AS = as
 AR = echo $(notdir $<);ar
 LD = echo $(notdir $@);ld
