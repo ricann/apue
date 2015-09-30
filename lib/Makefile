@@ -15,6 +15,12 @@ libunp.so: ${LIB_OBJS}
 ${LIB_OBJ_DIR}/librw.o: ${LIB_SRC_DIR}/librw.c
 	$(CC) $(CC_FLAGS) ${LIB_INCS} -o $@ $<
 
+${LIB_OBJ_DIR}/libsock.o: ${LIB_SRC_DIR}/libsock.c
+		$(CC) $(CC_FLAGS) ${LIB_INCS} -o $@ $<
+
+${LIB_OBJ_DIR}/wrapsock.o: ${LIB_SRC_DIR}/wrapsock.c
+		$(CC) $(CC_FLAGS) ${LIB_INCS} -o $@ $<
+
 ${LIB_OBJ_DIR}/liberr.o: ${LIB_SRC_DIR}/liberr.c
 	$(CC) $(CC_FLAGS) ${LIB_INCS} -o $@ $<
 

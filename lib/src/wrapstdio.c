@@ -19,3 +19,21 @@ Fgets(char *buf, int n, FILE *fp)
 
   return rptr;
 }
+
+/******************************************************************************
+*Function: Malloc
+*Description： allocate a buffer with specified size
+*Input: size(buffer size)
+*Output: none
+*Return: buf(buffer pointer)
+*Date: 2015/9/29
+******************************************************************************/
+void *
+Malloc(size_t size)
+{
+	void	*ptr;
+
+	if ( (ptr = malloc(size)) == NULL)
+		err_sys("malloc error");
+	return ptr;
+}

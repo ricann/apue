@@ -22,6 +22,12 @@
 #define MAXLINE   4096  //max text line length
 #define BUFFSIZE  8192  //buffer size for reads and writes
 
+#define	SA	struct sockaddr
+
+/* Following could be derived from SOMAXCONN in <sys/socket.h>, but many
+   kernels still #define it as 5, while actually supporting many more */
+#define	LISTENQ		1024	/* 2nd argument to listen() */
+
 //wrapunix.c
 //unix functions wrappers
 int Open(const char *pathname, int oflag, mode_t mode);
@@ -35,6 +41,22 @@ void Pipe(int filedes[2]);
 //wrapstdio.c
 //stdio functions wrappers
 char *Fgets(char *buf, int n, FILE *fp);
+void *Malloc(size_t size);
+
+//wrapsock.c
+//socket related wrappers
+int Socket(int family, int type, int protocol);
+void Bind(int fd, const struct sockaddr *sa, socklen_t salen);
+void Listen(int fd, int backlog);
+void Connect(int fd, const struct sockaddr *sa, socklen_t salen);
+void Sendto(int fd, const void *ptr, size_t nbytes, int flags,
+  const struct sockaddr *sa, socklen_t salen);
+ssize_t Recvfrom(int fd, void *ptr, size_t nbytes, int flags,
+  struct sockaddr *sa, socklen_t *salenptr);
+void Setsockopt(int fd, int level, int optname, const void *optval,
+  socklen_t optlen);
+void Getsockopt(int fd, int level, int optname, void *optval,
+  socklen_t *optlenptr);
 
 //librw.c
 //read and write related,

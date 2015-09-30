@@ -3,7 +3,7 @@
 
 /******************************************************************************
 *Function: Open
-*Description： open or create a file, open wrapper
+*Description: open or create a file, open wrapper
 *Input: pathname(file's pathname) / oflag(open flag) / mode(set privilege)
 *Output: none
 *Return: file descriptor
@@ -22,7 +22,7 @@ Open(const char *pathname, int oflag, mode_t mode)
 
 /******************************************************************************
 *Function: Close
-*Description： close a opened file, close wrapper
+*Description: close a opened file, close wrapper
 *Input: filedes(file descriptor)
 *Output: none
 *Return: none
@@ -57,7 +57,7 @@ Read(int filedes, void *ptr, size_t nbytes)
 
 /******************************************************************************
 *Function: Write
-*Description： write data to opened file, write wrapper
+*Description: write data to opened file, write wrapper
 *Input: filedes(file descriptor) / ptr(buf of data to be written)
         / nbytes(bytes to be written)
 *Output: none
@@ -73,7 +73,7 @@ Write(int filedes, const void *ptr, size_t nbytes)
 
 /******************************************************************************
 *Function: Fork
-*Description： create a new process, fork wrapper
+*Description: create a new process, fork wrapper
 *Input: none
 *Output: none
 *Return: pid
@@ -92,7 +92,7 @@ Fork(void)
 
 /******************************************************************************
 *Function: Waitpid
-*Description： wait process, Waitpid wrapper
+*Description: wait process, Waitpid wrapper
 *Input: pid / options
 *Output: statloc(save process's teminated status)
 *Return: retpid
@@ -111,7 +111,7 @@ Waitpid(pid_t pid, int *statloc, int options)
 
 /******************************************************************************
 *Function: Pipe
-*Description： create pipe, pipe wrapper
+*Description: create pipe, pipe wrapper
 *Input: none
 *Output: none
 *Return: pid
