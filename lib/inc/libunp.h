@@ -59,11 +59,19 @@ void Getsockopt(int fd, int level, int optname, void *optval,
   socklen_t *optlenptr);
 
 //librw.c
-//read and write related,
+//read and write related
 ssize_t Readn(int fd, void *ptr, size_t nbytes);
 ssize_t Writen(int fd, const void *ptr, size_t nbytes);
 ssize_t Readline(int fd, void *vptr, size_t maxlen);
 ssize_t Readline_buf(void **vptrptr);
+
+//libsock.c
+//socket related
+int tcp_connect(const char *host, const char *serv);
+int tcp_listen(const char *host, const char *serv, socklen_t *addrlenp);
+int udp_client(const char *host, const char *serv, SA **saptr, socklen_t *lenp);
+int udp_connect(const char *host, const char *serv);
+int udp_server(const char *host, const char *serv, socklen_t *addrlenp);
 
 //liberr.c
 //for error information

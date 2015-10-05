@@ -138,3 +138,90 @@ udp_client(const char *host, const char *serv, SA **saptr, socklen_t *lenp)
 
   return sockfd;
 }
+
+/******************************************************************************
+*Function: udp_connect
+*Description: used in udp client, connect to a specified host
+*Input: host(host name) / serv(port name)
+*Output: none
+*Return: socket descriptor
+*Date: 2015/10/5
+******************************************************************************/
+int
+udp_connect(const char *host, const char *serv)
+{
+  int sockfd, n;
+  struct addrinfo hints, *res, *ressave;
+
+  bzero(&hints, sizeof(struct addrinfo));
+  hints.ai_family = AF_UNSPEC;
+  hints.ai_socktype = SOCK_DGRAM;
+
+  if ( (n = getaddrinfo(host, serv, &hints, &res)) != 0)
+    err_quit("udp_connect error for %s, %s: %s",
+      host, serv, gai_strerror(n));
+
+  ressave = res;
+
+  do {
+    sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    if (sockfd < 0)
+      continue;
+
+    if (connect(sockfd, res->ai_addr, res->ai_addrlen) == 0)
+      break;
+
+    Close(sockfd);
+  } while ( (res = res->ai_next) != NULL);
+
+  if (res == NULL)
+    err_sys("udp_connect error for %s, %s", host, serv);
+
+  freeaddrinfo(ressave);
+
+  return sockfd;
+}
+
+/******************************************************************************
+*Function: udp_server
+*Description: used in udp server, connect to a specified host
+*Input: host(host name) / serv(port name)
+*Output: addrlenp(address length)
+*Return: socket descriptor
+*Date: 2015/10/5
+******************************************************************************/
+int
+udp_server(const char *host, const char *serv, socklen_t *addrlenp)
+{
+  int sockfd, n;
+  struct addrinfo hints, *res, *ressave;
+
+  bzero(&hints, sizeof(struct addrinfo));
+  hints.ai_flags = AI_PASSIVE;
+  hints.ai_family = AF_UNSPEC;
+  hints.ai_socktype = SOCK_DGRAM;
+
+  if ( (n = getaddrinfo(host, serv, &hints, &res)) != 0)
+    err_quit("udp_server error for %s, %s: %s",
+      host, serv, gai_strerror(n));
+
+  ressave = res;
+
+  do {
+    sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    if (sockfd < 0)
+      continue;
+
+    if (bind(sockfd, res->ai_addr, res->ai_addrlen) == 0)
+      break;
+
+    Close(sockfd);
+  } while ( (res = res->ai_next) != NULL);
+
+  if (addrlenp)
+    *addrlenp = res->ai_addrlen;
+
+  freeaddrinfo(ressave);
+
+  return sockfd;
+}
