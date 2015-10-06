@@ -4,6 +4,7 @@
 //head files
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/wait.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
@@ -57,6 +58,17 @@ void Setsockopt(int fd, int level, int optname, const void *optval,
   socklen_t optlen);
 void Getsockopt(int fd, int level, int optname, void *optval,
   socklen_t *optlenptr);
+
+//wrappthread.c
+//pthread related
+void Pthread_create(pthread_t *tid, const pthread_attr_t *attr,
+  void * (*func)(void *), void *arg);
+void Pthread_join(pthread_t tid, void **status);
+void Pthread_detach(pthread_t tid);
+void Pthread_mutex_init(pthread_mutex_t *mptr, pthread_mutexattr_t *attr);
+void Pthread_mutexattr_init(pthread_mutexattr_t *attr);
+void Pthread_mutex_lock(pthread_mutex_t *mptr);
+void Pthread_mutex_unlock(pthread_mutex_t *mptr);
 
 //librw.c
 //read and write related
