@@ -8,7 +8,7 @@
 int cnt;
 
 pthread_mutex_t mtx;
-pthread_mutex_t cond;
+pthread_cond_t cond;
 
 void *doit(void *vptr);
 void send_frame();
@@ -20,6 +20,9 @@ int main()
     pthread_t tid[MAX_THREAD_NUM];
 
     cnt = 0;
+
+    init_mutex();
+    init_cond();
 
     // create 10 threads
     for(int i=0; i<MAX_THREAD_NUM; i++) {
@@ -48,8 +51,6 @@ void *doit(void *vptr)
 
         pthread_mutex_lock(&mtx);
         cnt++;
-
-        sleep(1);
         printf("%d\n", cnt);
         while(cnt>=1 && cnt<MAX_THREAD_NUM) {
             pthread_cond_wait(&cond, &mtx);
