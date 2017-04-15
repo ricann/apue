@@ -9,6 +9,7 @@ int cnt;
 
 pthread_mutex_t mtx;
 pthread_cond_t cond;
+pthread_barrier_t barr;
 
 void *doit(void *vptr);
 void send_frame();
@@ -23,6 +24,7 @@ int main()
 
     init_mutex();
     init_cond();
+    pthread_barrier_init(&barr, NULL, MAX_THREAD_NUM);
 
     // create 10 threads
     for(int i=0; i<MAX_THREAD_NUM; i++) {
@@ -52,21 +54,16 @@ void *doit(void *vptr)
         pthread_mutex_lock(&mtx);
         cnt++;
         printf("%d\n", cnt);
-        while(cnt>=1 && cnt<MAX_THREAD_NUM) {
-            pthread_cond_wait(&cond, &mtx);
-        }
 
         if(cnt == MAX_THREAD_NUM) {
             cnt = 0;
             dosig = 1;
             printf("\n");
-        } else {
-            dosig = 0;
         }
         pthread_mutex_unlock(&mtx);
 
-        if(dosig)
-            pthread_cond_broadcast(&cond);
+        pthread_barrier_wait(&barr);
+
     }
 
     return NULL;
