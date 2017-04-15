@@ -50,10 +50,9 @@ void *doit(void *vptr)
     for(int i=0; i<5; i++) {
         send_frame();
 
-
         pthread_mutex_lock(&mtx);
         cnt++;
-        printf("%d\n", cnt);
+        printf("pid: 0x%08lx, %d\n", pthread_self(), cnt);
 
         if(cnt == MAX_THREAD_NUM) {
             cnt = 0;
@@ -63,6 +62,11 @@ void *doit(void *vptr)
         pthread_mutex_unlock(&mtx);
 
         pthread_barrier_wait(&barr);
+
+        /*
+        if(dosig)
+            pthread_cond_broadcast(&cond);
+        //*/
 
     }
 
