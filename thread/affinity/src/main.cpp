@@ -18,10 +18,10 @@ void func();
 int main()
 {
     thread thr1 = thread(&func1);
-    thread thr2 = thread(&func2);
+    //thread thr2 = thread(&func2);
 
     thr1.join();
-    thr2.join();
+    //thr2.join();
 
     return 0;
 }
@@ -29,7 +29,6 @@ int main()
 void func1()
 {
     cpu_set_t mask;
-    cpu_set_t get;
     CPU_ZERO(&mask);
     CPU_SET(0, &mask);
 
@@ -44,7 +43,6 @@ void func1()
 void func2()
 {
     cpu_set_t mask;
-    cpu_set_t get;
     CPU_ZERO(&mask);
     CPU_SET(1, &mask);
 
@@ -58,7 +56,7 @@ void func2()
 
 void func()
 {
-    int size = 65536;
+    int size = 4096;
     signed char *vecA_s8 = new signed char [size];
     float *vecA_f = new float [size];
     float *vecB = new float [size];
@@ -79,7 +77,7 @@ void func()
     cout << "generating vector over!" << endl;
 
     //*/
-    for(int i=0; i<10000; i++)
+    for(int i=0; i<1000000; i++)
         vecxvec_add_vec_s8ff(vecA_s8, vecB, vecC, size);
     //*/
 
