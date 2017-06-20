@@ -8,20 +8,37 @@
 #include <thread>
 
 #include "arith.h"
+#include "matrix.h"
 
 using namespace std;
+
+int n_kb = 0;
+int n_thr = 0;
+int n_arr = 0;
 
 void func1();
 void func2();
 void func();
 
-int main()
+int main(int argc, char *argv[])
 {
-    thread thr1 = thread(&func1);
-    //thread thr2 = thread(&func2);
+    n_kb = atoi(argv[1]);
+    n_thr = atoi(argv[2]);
+    n_arr = atoi(argv[3]);
 
-    thr1.join();
-    //thr2.join();
+    thread *thr1;
+    thread *thr2;
+
+    if(n_thr == 1) {
+        thr1 = new thread(&func1);
+        thr1->join();
+    } else {
+        thr1 = new thread(&func1);
+        thr2 = new thread(&func2);
+
+        thr1->join();
+        thr2->join();
+    }
 
     return 0;
 }
@@ -56,9 +73,12 @@ void func2()
 
 void func()
 {
-    int size = 4096;
+    int size = 1024*n_kb;
     signed char *vecA_s8 = new signed char [size];
-    float *vecA_f = new float [size];
+    float *vecA_f0 = new float [size];
+    float *vecA_f1 = new float [size];
+    float *vecA_f2 = new float [size];
+    float *vecA_f3 = new float [size];
     float *vecB = new float [size];
     float *vecC = new float [size];
 
@@ -69,20 +89,39 @@ void func()
         vecA_s8[i] = rand() % 128;
         if(vecA_s8[i]%2 == 0)
             vecA_s8[i] = -vecA_s8[i];
-        vecA_f[i] = (float)vecA_s8[i];
+        vecA_f0[i] = (float)vecA_s8[i];
+        vecA_f1[i] = (float)vecA_s8[i];
+        vecA_f2[i] = (float)vecA_s8[i];
+        vecA_f3[i] = (float)vecA_s8[i];
 
         vecB[i] = (rand() % 1024) / 128.0;
         vecC[i] = (rand() % 1024) / 64.0;
     }
     cout << "generating vector over!" << endl;
-
     //*/
-    for(int i=0; i<1000000; i++)
-        vecxvec_add_vec_s8ff(vecA_s8, vecB, vecC, size);
-    //*/
+    
+    for(int i=0; i<100000; i++) {
+        //vecxvec_add_vec_s8ff(vecA_s8, vecB, vecC, size);
+        if(n_arr == 1) {
+            vecxvec_add_vec_fff(vecA_f0, vecB, vecC, size);
+        } else {
+            if(i%4 == 0)
+                vecxvec_add_vec_fff(vecA_f0, vecB, vecC, size);
+            else if(i%4 == 1)
+                vecxvec_add_vec_fff(vecA_f1, vecB, vecC, size);
+            else if(i%4 == 2)
+                vecxvec_add_vec_fff(vecA_f2, vecB, vecC, size);
+            else
+                vecxvec_add_vec_fff(vecA_f3, vecB, vecC, size);
+        }
+    }
 
     delete []vecA_s8;
-    delete []vecA_f;
+    delete []vecA_f0;
+    delete []vecA_f1;
+    delete []vecA_f2;
+    delete []vecA_f3;
     delete []vecB;
     delete []vecC;
 }
+
