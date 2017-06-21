@@ -4,13 +4,10 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 MESSAGE(STATUS "test CMakeList.txt -----------------------")
 
 # compiler related
-SET(NEON_FLAGS "-ffast-math -mfpu=neon -mcpu=cortex-a9 -mfloat-abi=hard")
-SET(CMAKE_C_COMPILER "clang")
+SET(CMAKE_C_COMPILER "gcc")
 SET(CMAKE_C_FLAGS "-O2 -Wall -std=gnu99 -Wpointer-arith")
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NEON_FLAGS}")
-SET(CMAKE_CXX_COMPILER "clang++")
+SET(CMAKE_CXX_COMPILER "g++")
 SET(CMAKE_CXX_FLAGS "-O2 -Wall -std=c++11 -pthread -Wpointer-arith")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NEON_FLAGS}")
 
 ADD_DEFINITIONS("-DUSENEON")
 

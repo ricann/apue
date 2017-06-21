@@ -1,6 +1,6 @@
 #!/bin/bash
-# 1 core, 128 buf
+# 2 core, 1 buf
 for((i=1; i<=32; i++)); do
     echo $i
-    time ./test_affinity $i 1 128
+    time ./test_affinity $i 4 1
 done

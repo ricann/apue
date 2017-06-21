@@ -10,7 +10,8 @@
 #include "arith.h"
 #include "matrix.h"
 
-#define BUF_NUM     128
+#define BUF_NUM     1024
+#define MAX_THREAD  4
 
 using namespace std;
 
@@ -18,8 +19,7 @@ int n_kb = 0;
 int n_thr = 0;
 int n_arr = 0;
 
-void func1();
-void func2();
+void thr_func(int cpuid);
 void func();
 
 int main(int argc, char *argv[])
@@ -28,44 +28,27 @@ int main(int argc, char *argv[])
     n_thr = atoi(argv[2]);
     n_arr = atoi(argv[3]);
 
-    thread *thr1;
-    thread *thr2;
+    thread *thr[MAX_THREAD];
 
-    if(n_thr == 1) {
-        thr1 = new thread(&func1);
-        thr1->join();
-    } else {
-        thr1 = new thread(&func1);
-        thr2 = new thread(&func2);
+    for(int i=0; i<n_thr; i++) {
+        thr[i] = new thread(&thr_func, i);
+    }
 
-        thr1->join();
-        thr2->join();
+    for(int i=0; i<n_thr; i++) {
+        thr[i]->join();
     }
 
     return 0;
 }
 
-void func1()
+void thr_func(int cpuid)
 {
     cpu_set_t mask;
     CPU_ZERO(&mask);
-    CPU_SET(0, &mask);
+    CPU_SET(cpuid, &mask);
 
-    cout << "thread1 tart..." << endl;
-
-    if(sched_setaffinity(0, sizeof(mask), &mask) == -1)
-        cout << "warning: could not set CPU affinity, continuing..." << endl;
-
-    func();
-}
-
-void func2()
-{
-    cpu_set_t mask;
-    CPU_ZERO(&mask);
-    CPU_SET(1, &mask);
-
-    cout << "thread2 tart..." << endl;
+    cout << "thread " << cpuid 
+        << " start..." << endl;
 
     if(sched_setaffinity(0, sizeof(mask), &mask) == -1)
         cout << "warning: could not set CPU affinity, continuing..." << endl;
@@ -99,7 +82,7 @@ void func()
     cout << "generating vector over!" << endl;
     //*/
     
-    for(int i=0; i<100000; i++) {
+    for(int i=0; i<200000; i++) {
         if(n_arr == 1) {
             vecxvec_add_vec_fff(vecA_f[0], vecB, vecC, size);
         } else {
