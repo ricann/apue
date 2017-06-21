@@ -10,6 +10,8 @@
 #include "arith.h"
 #include "matrix.h"
 
+#define BUF_NUM     128
+
 using namespace std;
 
 int n_kb = 0;
@@ -75,10 +77,9 @@ void func()
 {
     int size = 1024*n_kb;
     signed char *vecA_s8 = new signed char [size];
-    float *vecA_f0 = new float [size];
-    float *vecA_f1 = new float [size];
-    float *vecA_f2 = new float [size];
-    float *vecA_f3 = new float [size];
+    float *vecA_f[BUF_NUM];
+    for(int i=0; i<BUF_NUM; i++)
+        vecA_f[i] = new float [size];
     float *vecB = new float [size];
     float *vecC = new float [size];
 
@@ -89,10 +90,8 @@ void func()
         vecA_s8[i] = rand() % 128;
         if(vecA_s8[i]%2 == 0)
             vecA_s8[i] = -vecA_s8[i];
-        vecA_f0[i] = (float)vecA_s8[i];
-        vecA_f1[i] = (float)vecA_s8[i];
-        vecA_f2[i] = (float)vecA_s8[i];
-        vecA_f3[i] = (float)vecA_s8[i];
+        for(int j=0; j<BUF_NUM; j++)
+            vecA_f[j][i] = (float)vecA_s8[i];
 
         vecB[i] = (rand() % 1024) / 128.0;
         vecC[i] = (rand() % 1024) / 64.0;
@@ -101,26 +100,16 @@ void func()
     //*/
     
     for(int i=0; i<100000; i++) {
-        //vecxvec_add_vec_s8ff(vecA_s8, vecB, vecC, size);
         if(n_arr == 1) {
-            vecxvec_add_vec_fff(vecA_f0, vecB, vecC, size);
+            vecxvec_add_vec_fff(vecA_f[0], vecB, vecC, size);
         } else {
-            if(i%4 == 0)
-                vecxvec_add_vec_fff(vecA_f0, vecB, vecC, size);
-            else if(i%4 == 1)
-                vecxvec_add_vec_fff(vecA_f1, vecB, vecC, size);
-            else if(i%4 == 2)
-                vecxvec_add_vec_fff(vecA_f2, vecB, vecC, size);
-            else
-                vecxvec_add_vec_fff(vecA_f3, vecB, vecC, size);
+            vecxvec_add_vec_fff(vecA_f[i%BUF_NUM], vecB, vecC, size);
         }
     }
 
     delete []vecA_s8;
-    delete []vecA_f0;
-    delete []vecA_f1;
-    delete []vecA_f2;
-    delete []vecA_f3;
+    for(int i=0; i<BUF_NUM; i++)
+        delete [] vecA_f[i];
     delete []vecB;
     delete []vecC;
 }
